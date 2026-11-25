@@ -1,12 +1,153 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MJA FILMS</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="theme-color" content="#090b10">
+    <title>MJA FILMS | Cine para cada momento</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
-    <h1>HOLA K ASE?</h1>
+    <div class="login-screen" id="login-screen">
+        <div class="login-backdrop"></div>
+        <section class="login-card" aria-labelledby="login-title">
+            <a class="brand login-brand" href="#" aria-label="MJA Films, inicio">
+                <span class="brand-mark" aria-hidden="true">M</span>
+                <span>MJA <strong>FILMS</strong></span>
+            </a>
+            <p class="eyebrow">TU PRÓXIMA HISTORIA EMPIEZA AQUÍ</p>
+            <h1 id="login-title">Bienvenido<br>de nuevo.</h1>
+            <p class="login-copy">Inicia sesión para descubrir todo lo que tenemos preparado para ti.</p>
+
+            <form id="login-form">
+                <label for="username">Usuario</label>
+                <input id="username" name="username" type="text" placeholder="Tu nombre de usuario" autocomplete="username" required>
+
+                <label for="password">Contraseña</label>
+                <input id="password" name="password" type="password" placeholder="Tu contraseña" autocomplete="current-password" required>
+
+                <p class="login-error" id="login-error" role="alert" aria-live="polite"></p>
+                <button class="button button-primary login-submit" type="submit">Entrar <span aria-hidden="true">→</span></button>
+            </form>
+            <p class="login-footnote">Acceso de administrador</p>
+        </section>
+        <p class="login-caption">UNA BUENA PELÍCULA LO CAMBIA TODO.</p>
+    </div>
+
+    <main class="app-shell" id="app-shell" hidden>
+        <header class="site-header">
+            <a class="brand" href="#" aria-label="MJA Films, inicio">
+                <span class="brand-mark" aria-hidden="true">M</span>
+                <span>MJA <strong>FILMS</strong></span>
+            </a>
+            <nav class="main-nav" aria-label="Navegación principal">
+                <a class="nav-link active" href="#inicio">Inicio</a>
+                <a class="nav-link" href="#catalogo">Explorar</a>
+                <a class="nav-link" href="#catalogo">Mi lista</a>
+            </nav>
+            <div class="header-actions">
+                <span class="admin-label"><span class="status-dot"></span> Admin</span>
+                <button class="icon-button" id="logout-button" type="button" aria-label="Cerrar sesión" title="Cerrar sesión">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3m9-8h6a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <section class="hero" id="inicio" aria-labelledby="hero-title">
+            <div class="hero-shade"></div>
+            <div class="hero-content">
+                <p class="eyebrow hero-eyebrow"><span class="sparkle" aria-hidden="true">✦</span> CINE QUE TE MUEVE</p>
+                <h1 id="hero-title">Hay historias<br>que <span>se quedan.</span></h1>
+                <p class="hero-description">Encuentra tu próxima película favorita entre aventuras inolvidables, grandes clásicos y nuevos descubrimientos.</p>
+                <div class="hero-actions">
+                    <button class="button button-primary" type="button"><span class="play-icon" aria-hidden="true">▶</span> Explorar catálogo</button>
+                    <button class="button button-ghost" type="button"><span aria-hidden="true">＋</span> Mi lista</button>
+                </div>
+                <div class="hero-meta"><span class="meta-line"></span> TU CINE, A TU MANERA</div>
+            </div>
+            <div class="hero-index"><span>01</span><i></i> 03</div>
+        </section>
+
+        <section class="catalog-section" id="catalogo" aria-labelledby="catalog-title">
+            <div class="catalog-heading">
+                <div>
+                    <p class="eyebrow">UNA SELECCIÓN PARA TI</p>
+                    <h2 id="catalog-title">Explora el catálogo<span>.</span></h2>
+                </div>
+                <a class="text-link" href="#peliculas">Ver todas <span aria-hidden="true">↗</span></a>
+            </div>
+
+            <div class="browse-tools" aria-label="Búsqueda y filtros del catálogo">
+                <label class="search-box">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg>
+                    <input type="search" placeholder="Busca una película, actor o director..." aria-label="Buscar películas">
+                    <span class="search-shortcut">⌘ K</span>
+                </label>
+                <div class="filter-group">
+                    <label class="select-wrap">
+                        <span class="sr-only">Género</span>
+                        <select aria-label="Filtrar por género">
+                            <option value="">Género</option>
+                            <option>Acción</option>
+                            <option>Drama</option>
+                            <option>Ciencia ficción</option>
+                            <option>Comedia</option>
+                        </select>
+                    </label>
+                    <label class="select-wrap">
+                        <span class="sr-only">Año</span>
+                        <select aria-label="Filtrar por año">
+                            <option value="">Año</option>
+                            <option>2020 — 2025</option>
+                            <option>2010 — 2019</option>
+                            <option>2000 — 2009</option>
+                            <option>Antes de 2000</option>
+                        </select>
+                    </label>
+                    <button class="filter-button" type="button" aria-label="Más filtros">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M7 12h10m-7 5h4"/><circle cx="8" cy="7" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="12" cy="17" r="1.5"/></svg>
+                        <span>Filtros</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="section-subheading" id="peliculas">
+                <h3>Para empezar <span>·</span> <span class="muted">Películas destacadas</span></h3>
+                <div class="carousel-controls" aria-label="Controles del carrusel">
+                    <button class="carousel-button" type="button" aria-label="Anterior">←</button>
+                    <button class="carousel-button" type="button" aria-label="Siguiente">→</button>
+                </div>
+            </div>
+
+            <div class="movie-grid">
+                <article class="movie-card">
+                    <div class="poster poster-uno"><span class="poster-kicker">UNA AVENTURA ÉPICA</span><span class="poster-title">MÁS<br>ALLÁ</span><span class="poster-bottom">DEL HORIZONTE</span></div>
+                    <div class="movie-info"><div><h4>Más allá del horizonte</h4><p>Aventura <span>·</span> 2024</p></div><span class="rating">★ 8.6</span></div>
+                </article>
+                <article class="movie-card">
+                    <div class="poster poster-dos"><span class="poster-kicker">EL TIEMPO NO ESPERA</span><span class="poster-title">ÚLTIMA<br>LLAMADA</span><span class="poster-rings"></span><span class="poster-bottom">CADA SEGUNDO CUENTA</span></div>
+                    <div class="movie-info"><div><h4>Última llamada</h4><p>Thriller <span>·</span> 2023</p></div><span class="rating">★ 9.1</span></div>
+                </article>
+                <article class="movie-card">
+                    <div class="poster poster-tres"><span class="poster-kicker">EN ALGÚN LUGAR DEL UNIVERSO</span><span class="poster-title">ÓRBITA</span><span class="poster-bottom">NO ESTAMOS SOLOS</span></div>
+                    <div class="movie-info"><div><h4>Órbita</h4><p>Ciencia ficción <span>·</span> 2025</p></div><span class="rating">★ 8.9</span></div>
+                </article>
+                <article class="movie-card">
+                    <div class="poster poster-cuatro"><span class="poster-kicker">UNA HISTORIA QUE INSPIRA</span><span class="poster-title">DÍAS<br>DE LUZ</span><span class="poster-sun"></span><span class="poster-bottom">MAÑANA SERÁ OTRO DÍA</span></div>
+                    <div class="movie-info"><div><h4>Días de luz</h4><p>Drama <span>·</span> 2022</p></div><span class="rating">★ 8.4</span></div>
+                </article>
+            </div>
+        </section>
+
+        <footer class="site-footer">
+            <a class="brand footer-brand" href="#inicio"><span class="brand-mark" aria-hidden="true">M</span><span>MJA <strong>FILMS</strong></span></a>
+            <p>Tu próxima historia favorita está por comenzar.</p>
+            <span class="footer-copy">© 2026 MJA FILMS</span>
+        </footer>
+    </main>
+    <script src="scripts/srcipt.js"></script>
 </body>
 </html>
