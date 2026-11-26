@@ -1,0 +1,308 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#090b10">
+
+    <title>Explorar | MJA FILMS</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles/style.css">
+    <script src="scripts/explorar.js" defer></script>
+</head>
+
+<body class="explore-page">
+
+    <main class="app-shell" id="app-shell" hidden>
+
+        <!-- CABECERA -->
+
+        <header class="site-header">
+
+            <a class="brand" href="index.html" aria-label="MJA Films, inicio">
+                <span class="brand-mark" aria-hidden="true">M</span>
+                <span>MJA <strong>FILMS</strong></span>
+            </a>
+
+            <nav class="main-nav" aria-label="Navegación principal">
+                <a class="nav-link" href="index.html">Inicio</a>
+
+                <a class="nav-link active" id="nav-explore"
+                   href="explorar.html" aria-current="page">
+                    Explorar
+                </a>
+
+                <a class="nav-link" id="nav-list"
+                   href="explorar.html?lista=1">
+                    Mi lista
+                </a>
+            </nav>
+
+            <div class="header-actions">
+
+                <span class="admin-label">
+                    <span class="status-dot"></span> Admin
+                </span>
+
+                <button class="icon-button" id="logout-button"
+                        type="button" aria-label="Cerrar sesión"
+                        title="Cerrar sesión">
+
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M10 17l5-5-5-5M15 12H3m9-8h6a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6"/>
+                    </svg>
+
+                </button>
+
+            </div>
+
+        </header>
+
+        <!-- PRESENTACIÓN DEL CATÁLOGO -->
+
+        <section class="explore-hero" aria-labelledby="explore-title">
+
+            <nav class="breadcrumb" aria-label="Ruta de navegación">
+                <a href="index.html">Inicio</a>
+                <span aria-hidden="true">/</span>
+                <span id="breadcrumb-current">Explorar</span>
+            </nav>
+
+            <p class="eyebrow" id="explore-eyebrow">
+                EL CINE NO TIENE LÍMITES
+            </p>
+
+            <h1 id="explore-title">
+                Descubre nuevas <span>historias.</span>
+            </h1>
+
+            <p class="hero-description" id="explore-description">
+                Explora nuestro catálogo, encuentra películas de todos
+                los géneros y guarda las historias que no te quieres perder.
+            </p>
+
+        </section>
+
+        <!-- CATÁLOGO DE PELÍCULAS -->
+
+        <section class="catalog-section explore-catalog"
+                 id="catalogo" aria-labelledby="catalog-title">
+
+            <!-- BUSCADOR -->
+
+            <div class="browse-tools">
+
+                <label class="search-box">
+
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="m16 16 4 4"/>
+                    </svg>
+
+                    <input id="search" type="search"
+                           placeholder="Busca una película..."
+                           aria-label="Buscar películas">
+
+                    <span class="search-shortcut">Ctrl / ⌘ K</span>
+
+                </label>
+
+                <!-- FILTROS PRINCIPALES -->
+
+                <div class="filter-group">
+
+                    <label class="select-wrap">
+
+                        <span class="sr-only">Género</span>
+
+                        <select id="genre" aria-label="Filtrar por género">
+                            <option value="">Género</option>
+                            <option>Acción</option>
+                            <option>Aventura</option>
+                            <option>Drama</option>
+                            <option>Ciencia ficción</option>
+                            <option>Comedia</option>
+                            <option>Thriller</option>
+                        </select>
+
+                    </label>
+
+                    <label class="select-wrap">
+
+                        <span class="sr-only">Año</span>
+
+                        <select id="year" aria-label="Filtrar por año">
+                            <option value="">Año</option>
+                            <option value="2020-2026">2020 — 2026</option>
+                            <option value="2010-2019">2010 — 2019</option>
+                            <option value="2000-2009">2000 — 2009</option>
+                            <option value="before-2000">Antes de 2000</option>
+                        </select>
+
+                    </label>
+
+                    <button class="filter-button" id="more-filters"
+                            type="button" aria-expanded="false"
+                            aria-controls="extra-filters">
+
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 7h16M7 12h10m-7 5h4"/>
+                            <circle cx="8" cy="7" r="1.5"/>
+                            <circle cx="15" cy="12" r="1.5"/>
+                            <circle cx="12" cy="17" r="1.5"/>
+                        </svg>
+
+                        <span>Filtros</span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- FILTROS ADICIONALES -->
+
+            <div class="extra-filters" id="extra-filters" hidden>
+
+                <label for="min-rating">Valoración mínima</label>
+
+                <span class="select-wrap">
+
+                    <select id="min-rating">
+                        <option value="0">Todas</option>
+                        <option value="7">7 o más</option>
+                        <option value="8">8 o más</option>
+                        <option value="9">9 o más</option>
+                    </select>
+
+                </span>
+
+                <button class="button button-ghost"
+                        id="reset-filters" type="button">
+                    Limpiar filtros
+                </button>
+
+            </div>
+
+            <!-- CATEGORÍAS -->
+
+            <div class="genre-tabs" role="group"
+                 aria-label="Géneros del catálogo">
+
+                <button class="genre-tab active" type="button"
+                        data-genre="" aria-pressed="true">
+                    Todas
+                </button>
+
+                <button class="genre-tab" type="button"
+                        data-genre="Acción" aria-pressed="false">
+                    Acción
+                </button>
+
+                <button class="genre-tab" type="button"
+                        data-genre="Aventura" aria-pressed="false">
+                    Aventura
+                </button>
+
+                <button class="genre-tab" type="button"
+                        data-genre="Drama" aria-pressed="false">
+                    Drama
+                </button>
+
+                <button class="genre-tab" type="button"
+                        data-genre="Ciencia ficción" aria-pressed="false">
+                    Ciencia ficción
+                </button>
+
+                <button class="genre-tab" type="button"
+                        data-genre="Comedia" aria-pressed="false">
+                    Comedia
+                </button>
+
+                <button class="genre-tab" type="button"
+                        data-genre="Thriller" aria-pressed="false">
+                    Thriller
+                </button>
+
+            </div>
+
+            <!-- RESULTADOS Y ORDENACIÓN -->
+
+            <div class="section-subheading explore-results">
+
+                <div>
+                    <h2 id="catalog-title">Todas las películas</h2>
+                    <p class="result-count" id="result-count"
+                       aria-live="polite"></p>
+                </div>
+
+                <label class="select-wrap">
+
+                    <span class="sr-only">Ordenar películas</span>
+
+                    <select id="sort" aria-label="Ordenar películas">
+                        <option value="featured">Destacadas</option>
+                        <option value="rating">Mejor valoradas</option>
+                        <option value="recent">Más recientes</option>
+                        <option value="title">Título A-Z</option>
+                    </select>
+
+                </label>
+
+            </div>
+
+            <!-- PELÍCULAS GENERADAS DESDE JAVASCRIPT -->
+
+            <div class="movie-grid explore-grid" id="movie-grid"></div>
+
+            <!-- MENSAJE SIN RESULTADOS -->
+
+            <div class="empty-state" id="empty-state" hidden>
+
+                <h3 id="empty-title">No encontramos películas.</h3>
+
+                <p id="empty-copy">
+                    Prueba con otros filtros o una búsqueda diferente.
+                </p>
+
+                <button class="button button-ghost"
+                        id="empty-reset" type="button">
+                    Limpiar filtros
+                </button>
+
+                <a class="button button-primary" id="empty-explore"
+                   href="explorar.html" hidden>
+                    Explorar catálogo
+                </a>
+
+            </div>
+
+        </section>
+
+        <!-- PIE DE PÁGINA -->
+
+        <footer class="site-footer">
+
+            <a class="brand footer-brand" href="index.html">
+                <span class="brand-mark" aria-hidden="true">M</span>
+                <span>MJA <strong>FILMS</strong></span>
+            </a>
+
+            <p>Tu próxima historia favorita está por comenzar.</p>
+
+            <span class="footer-copy">© 2026 MJA FILMS</span>
+
+        </footer>
+
+    </main>
+
+    <noscript>Activa JavaScript para acceder al catálogo.</noscript>
+
+</body>
+</html>
