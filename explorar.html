@@ -1,489 +1,154 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#090b10">
-
+    <meta name="theme-color" content="#08090d">
+    <!-- [LARAVEL] content="{{ csrf_token() }}" -->
+    <meta name="csrf-token" content="">
     <title>Explorar | MJA FILMS</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/app.css">
 
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="./styles/style.css">
-   
+    <!-- [LARAVEL] se borra: lo hace el middleware "auth" -->
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/guard.js"></script>
 </head>
+<body class="explore-page" data-tema="todas">
 
-<body class="explore-page">
+    <!-- FONDO DE PANTALLA: cambia según el género seleccionado -->
+    <div class="page-backdrop" id="page-backdrop" aria-hidden="true"></div>
 
-   <main class="app-shell" id="app-shell">
+    <!-- ============ [LARAVEL] partials/header.blade.php ============ -->
+    <header class="site-header">
+        <a class="brand" href="index.html" aria-label="MJA Films, inicio">
+            <span class="brand-mark" aria-hidden="true">M</span>
+            <span>MJA <strong>FILMS</strong></span>
+        </a>
+        <nav class="main-nav" aria-label="Navegación principal">
+            <a class="nav-link" href="index.html">Inicio</a>
+            <a class="nav-link active" id="nav-explore" href="explorar.html" aria-current="page">Explorar</a>
+            <a class="nav-link" id="nav-list" href="explorar.html?lista=1">Mi lista</a>
+        </nav>
+        <div class="header-actions">
+            <span class="admin-label"><span class="status-dot"></span> <span id="user-name">Admin</span></span>
+            <button class="icon-button" id="logout-button" type="button" aria-label="Cerrar sesión" title="Cerrar sesión">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3m9-8h6a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6"/></svg>
+            </button>
+        </div>
+    </header>
+    <!-- ============ fin header ============ -->
 
-        <!-- CABECERA -->
+    <main class="app-shell">
 
-        <header class="site-header">
-
-            <a class="brand" href="index.html" aria-label="MJA Films, inicio">
-                <span class="brand-mark" aria-hidden="true">M</span>
-                <span>MJA <strong>FILMS</strong></span>
-            </a>
-
-            <nav class="main-nav" aria-label="Navegación principal">
-                <a class="nav-link" href="index.html">Inicio</a>
-
-                <a class="nav-link active" id="nav-explore"
-                   href="explorar.html" aria-current="page">
-                    Explorar
-                </a>
-
-                <a class="nav-link" id="nav-list"
-                   href="explorar.html?lista=1">
-                    Mi lista
-                </a>
-            </nav>
-
-            <div class="header-actions">
-
-                <span class="admin-label">
-                    <span class="status-dot"></span> Admin
-                </span>
-
-                <button class="icon-button" id="logout-button"
-                        type="button" aria-label="Cerrar sesión"
-                        title="Cerrar sesión">
-
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M10 17l5-5-5-5M15 12H3m9-8h6a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6"/>
-                    </svg>
-
-                </button>
-
-            </div>
-
-        </header>
-
-        <!-- PRESENTACIÓN DEL CATÁLOGO -->
-
+        <!-- PRESENTACIÓN (los textos cambian con el género) -->
         <section class="explore-hero" aria-labelledby="explore-title">
-
             <nav class="breadcrumb" aria-label="Ruta de navegación">
                 <a href="index.html">Inicio</a>
                 <span aria-hidden="true">/</span>
                 <span id="breadcrumb-current">Explorar</span>
             </nav>
-
-            <p class="eyebrow" id="explore-eyebrow">
-                EL CINE NO TIENE LÍMITES
-            </p>
-
-            <h1 id="explore-title">
-                Descubre nuevas <span>historias.</span>
-            </h1>
-
-            <p class="hero-description" id="explore-description">
-                Explora nuestro catálogo, encuentra películas de todos
-                los géneros y guarda las historias que no te quieres perder.
-            </p>
-
+            <p class="eyebrow tema-eyebrow" id="explore-eyebrow">EL CINE NO TIENE LÍMITES</p>
+            <h1 id="explore-title">Descubre nuevas <span>historias.</span></h1>
+            <p class="hero-description" id="explore-description">Explora nuestro catálogo, encuentra películas de todos los géneros y guarda las historias que no te quieres perder.</p>
         </section>
 
-        <!-- CATÁLOGO DE PELÍCULAS -->
+        <section class="catalog-section explore-catalog" id="catalogo" aria-labelledby="catalog-title">
 
-        <section class="catalog-section explore-catalog"
-                 id="catalogo" aria-labelledby="catalog-title">
-
-            <!-- BUSCADOR -->
-
-            <div class="browse-tools">
-
+            <!-- BUSCADOR Y FILTROS -->
+            <!-- [LARAVEL] action="{{ route('explorar') }}" -->
+            <form class="browse-tools" action="explorar.html" method="get" role="search">
                 <label class="search-box">
-
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <circle cx="11" cy="11" r="7"/>
-                        <path d="m16 16 4 4"/>
-                    </svg>
-
-                    <input id="search" type="search"
-                           placeholder="Busca una película..."
-                           aria-label="Buscar películas">
-
-                    <span class="search-shortcut">Ctrl / ⌘ K</span>
-
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg>
+                    <input id="search" name="q" type="search" placeholder="Busca por título, actor o director..." aria-label="Buscar películas" autocomplete="off" data-buscador>
+                    <span class="search-shortcut">Ctrl K</span>
                 </label>
 
-                <!-- FILTROS PRINCIPALES -->
-
                 <div class="filter-group">
-
                     <label class="select-wrap">
-
                         <span class="sr-only">Género</span>
-
-                        <select id="genre" aria-label="Filtrar por género">
+                        <select id="genre" name="genero" aria-label="Filtrar por género">
                             <option value="">Género</option>
-                            <option>Acción</option>
-                            <option>Aventura</option>
-                            <option>Drama</option>
-                            <option>Ciencia ficción</option>
-                            <option>Comedia</option>
-                            <option>Thriller</option>
                         </select>
-
                     </label>
-
                     <label class="select-wrap">
-
                         <span class="sr-only">Año</span>
-
-                        <select id="year" aria-label="Filtrar por año">
+                        <select id="year" name="anio" aria-label="Filtrar por año">
                             <option value="">Año</option>
                             <option value="2020-2026">2020 — 2026</option>
                             <option value="2010-2019">2010 — 2019</option>
                             <option value="2000-2009">2000 — 2009</option>
-                            <option value="before-2000">Antes de 2000</option>
+                            <option value="antes-2000">Antes de 2000</option>
                         </select>
-
                     </label>
-
-                    <button class="filter-button" id="more-filters"
-                            type="button" aria-expanded="false"
-                            aria-controls="extra-filters">
-
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M4 7h16M7 12h10m-7 5h4"/>
-                            <circle cx="8" cy="7" r="1.5"/>
-                            <circle cx="15" cy="12" r="1.5"/>
-                            <circle cx="12" cy="17" r="1.5"/>
-                        </svg>
-
+                    <button class="filter-button" id="more-filters" type="button" aria-expanded="false" aria-controls="extra-filters">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M7 12h10m-7 5h4"/><circle cx="8" cy="7" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="12" cy="17" r="1.5"/></svg>
                         <span>Filtros</span>
-
+                        <span class="filters-badge" id="filters-badge" hidden>0</span>
                     </button>
-
                 </div>
-
-            </div>
-
-            <!-- FILTROS ADICIONALES -->
+            </form>
 
             <div class="extra-filters" id="extra-filters" hidden>
-
                 <label for="min-rating">Valoración mínima</label>
-
                 <span class="select-wrap">
-
                     <select id="min-rating">
                         <option value="0">Todas</option>
-                        <option value="7">7 o más</option>
-                        <option value="8">8 o más</option>
-                        <option value="9">9 o más</option>
+                        <option value="7">★ 7 o más</option>
+                        <option value="8">★ 8 o más</option>
+                        <option value="9">★ 9 o más</option>
                     </select>
-
                 </span>
-
-                <button class="button button-ghost"
-                        id="reset-filters" type="button">
-                    Limpiar filtros
-                </button>
-
+                <button class="button button-ghost" id="reset-filters" type="button">Limpiar filtros</button>
             </div>
 
-            <!-- CATEGORÍAS -->
+            <!-- PESTAÑAS DE GÉNERO (se crean desde los datos) -->
+            <div class="genre-tabs" id="genre-tabs" role="group" aria-label="Géneros del catálogo"></div>
 
-            <div class="genre-tabs" role="group"
-                 aria-label="Géneros del catálogo">
-
-                <button class="genre-tab active" type="button"
-                        data-genre="" aria-pressed="true">
-                    Todas
-                </button>
-
-                <button class="genre-tab" type="button"
-                        data-genre="Acción" aria-pressed="false">
-                    Acción
-                </button>
-
-                <button class="genre-tab" type="button"
-                        data-genre="Aventura" aria-pressed="false">
-                    Aventura
-                </button>
-
-                <button class="genre-tab" type="button"
-                        data-genre="Drama" aria-pressed="false">
-                    Drama
-                </button>
-
-                <button class="genre-tab" type="button"
-                        data-genre="Ciencia ficción" aria-pressed="false">
-                    Ciencia ficción
-                </button>
-
-                <button class="genre-tab" type="button"
-                        data-genre="Comedia" aria-pressed="false">
-                    Comedia
-                </button>
-
-                <button class="genre-tab" type="button"
-                        data-genre="Thriller" aria-pressed="false">
-                    Thriller
-                </button>
-
-            </div>
-
-            <!-- RESULTADOS Y ORDENACIÓN -->
-
+            <!-- RESULTADOS Y ORDEN -->
             <div class="section-subheading explore-results">
-
                 <div>
                     <h2 id="catalog-title">Todas las películas</h2>
-                    <p class="result-count" id="result-count"
-                       aria-live="polite"></p>
+                    <p class="result-count" id="result-count" aria-live="polite"></p>
                 </div>
-
                 <label class="select-wrap">
-
                     <span class="sr-only">Ordenar películas</span>
-
                     <select id="sort" aria-label="Ordenar películas">
                         <option value="featured">Destacadas</option>
                         <option value="rating">Mejor valoradas</option>
                         <option value="recent">Más recientes</option>
                         <option value="title">Título A-Z</option>
                     </select>
-
                 </label>
-
             </div>
 
-            <!-- PELÍCULAS GENERADAS DESDE JAVASCRIPT -->
-
-           
-<div class="movie-grid explore-grid" id="movie-grid">
-
-    <!-- PELÍCULA 1 -->
-
-    <article class="movie-card">
-        <div class="poster poster-uno">
-            <span class="poster-kicker">UNA AVENTURA ÉPICA</span>
-            <span class="poster-title">MÁS<br>ALLÁ</span>
-            <span class="poster-bottom">DEL HORIZONTE</span>
-        </div>
-
-        <button class="favorite-button" type="button"
-                aria-label="Añadir Más allá del horizonte a Mi lista">+</button>
-
-        <div class="movie-info">
-            <div>
-                <h4>Más allá del horizonte</h4>
-                <p>Aventura <span>·</span> 2024</p>
-            </div>
-            <span class="rating">★ 8.6</span>
-        </div>
-    </article>
-
-
-    <!-- PELÍCULA 2 -->
-
-    <article class="movie-card">
-        <div class="poster poster-dos">
-            <span class="poster-kicker">EL TIEMPO NO ESPERA</span>
-            <span class="poster-title">ÚLTIMA<br>LLAMADA</span>
-            <span class="poster-rings"></span>
-            <span class="poster-bottom">CADA SEGUNDO CUENTA</span>
-        </div>
-
-        <button class="favorite-button" type="button"
-                aria-label="Añadir Última llamada a Mi lista">+</button>
-
-        <div class="movie-info">
-            <div>
-                <h4>Última llamada</h4>
-                <p>Thriller <span>·</span> 2023</p>
-            </div>
-            <span class="rating">★ 9.1</span>
-        </div>
-    </article>
-
-
-    <!-- PELÍCULA 3 -->
-
-    <article class="movie-card">
-        <div class="poster poster-tres">
-            <span class="poster-kicker">EN ALGÚN LUGAR DEL UNIVERSO</span>
-            <span class="poster-title">ÓRBITA</span>
-            <span class="poster-bottom">NO ESTAMOS SOLOS</span>
-        </div>
-
-        <button class="favorite-button" type="button"
-                aria-label="Añadir Órbita a Mi lista">+</button>
-
-        <div class="movie-info">
-            <div>
-                <h4>Órbita</h4>
-                <p>Ciencia ficción <span>·</span> 2025</p>
-            </div>
-            <span class="rating">★ 8.9</span>
-        </div>
-    </article>
-
-
-    <!-- PELÍCULA 4 -->
-
-    <article class="movie-card">
-        <div class="poster poster-cuatro">
-            <span class="poster-kicker">UNA HISTORIA QUE INSPIRA</span>
-            <span class="poster-title">DÍAS<br>DE LUZ</span>
-            <span class="poster-sun"></span>
-            <span class="poster-bottom">MAÑANA SERÁ OTRO DÍA</span>
-        </div>
-
-        <button class="favorite-button" type="button"
-                aria-label="Añadir Días de luz a Mi lista">+</button>
-
-        <div class="movie-info">
-            <div>
-                <h4>Días de luz</h4>
-                <p>Drama <span>·</span> 2022</p>
-            </div>
-            <span class="rating">★ 8.4</span>
-        </div>
-    </article>
-
-
-    <!-- PELÍCULA 5 -->
-
-    <article class="movie-card">
-        <div class="poster poster-cinco">
-            <span class="poster-kicker">NO HAY SEGUNDAS OPORTUNIDADES</span>
-            <span class="poster-title">CÓDIGO<br>CERO</span>
-            <span class="poster-bottom">TODO EMPIEZA AHORA</span>
-        </div>
-
-        <button class="favorite-button" type="button"
-                aria-label="Añadir Código cero a Mi lista">+</button>
-
-        <div class="movie-info">
-            <div>
-                <h4>Código cero</h4>
-                <p>Acción <span>·</span> 2026</p>
-            </div>
-            <span class="rating">★ 8.7</span>
-        </div>
-    </article>
-
-
-    <!-- PELÍCULA 6 -->
-
-    <article class="movie-card">
-        <div class="poster poster-seis">
-            <span class="poster-kicker">UN VIAJE IMPREVISTO</span>
-            <span class="poster-title">UN VERANO<br>CONTIGO</span>
-            <span class="poster-bottom">LO MEJOR ESTÁ POR LLEGAR</span>
-        </div>
-
-        <button class="favorite-button" type="button"
-                aria-label="Añadir Un verano contigo a Mi lista">+</button>
-
-        <div class="movie-info">
-            <div>
-                <h4>Un verano contigo</h4>
-                <p>Comedia <span>·</span> 2021</p>
-            </div>
-            <span class="rating">★ 7.8</span>
-        </div>
-    </article>
-
-
-    <!-- PELÍCULA 7 -->
-
-    <article class="movie-card">
-        <div class="poster poster-siete">
-            <span class="poster-kicker">EL MAÑANA YA ESTÁ AQUÍ</span>
-            <span class="poster-title">ECOS<br>DEL FUTURO</span>
-            <span class="poster-bottom">TODO TIENE UN ORIGEN</span>
-        </div>
-
-        <button class="favorite-button" type="button"
-                aria-label="Añadir Ecos del futuro a Mi lista">+</button>
-
-        <div class="movie-info">
-            <div>
-                <h4>Ecos del futuro</h4>
-                <p>Ciencia ficción <span>·</span> 2018</p>
-            </div>
-            <span class="rating">★ 9.0</span>
-        </div>
-    </article>
-
-
-    <!-- PELÍCULA 8 -->
-
-    <article class="movie-card">
-        <div class="poster poster-ocho">
-            <span class="poster-kicker">MÁS ALLÁ DE LO CONOCIDO</span>
-            <span class="poster-title">LA ÚLTIMA<br>FRONTERA</span>
-            <span class="poster-bottom">ATRÉVETE A IR MÁS LEJOS</span>
-        </div>
-
-        <button class="favorite-button" type="button"
-                aria-label="Añadir La última frontera a Mi lista">+</button>
-
-        <div class="movie-info">
-            <div>
-                <h4>La última frontera</h4>
-                <p>Aventura <span>·</span> 2015</p>
-            </div>
-            <span class="rating">★ 8.2</span>
-        </div>
-    </article>
-
-</div>
-
-
-            <!-- MENSAJE SIN RESULTADOS -->
+            <!-- [LARAVEL] Aquí podrías pintar las tarjetas con @foreach si prefieres hacerlo en el servidor -->
+            <div class="movie-grid explore-grid" id="movie-grid"></div>
 
             <div class="empty-state" id="empty-state" hidden>
-
+                <div class="empty-icon" aria-hidden="true">✦</div>
                 <h3 id="empty-title">No encontramos películas.</h3>
-
-                <p id="empty-copy">
-                    Prueba con otros filtros o una búsqueda diferente.
-                </p>
-
-                <button class="button button-ghost"
-                        id="empty-reset" type="button">
-                    Limpiar filtros
-                </button>
-
-                <a class="button button-primary" id="empty-explore"
-                   href="explorar.html" hidden>
-                    Explorar catálogo
-                </a>
-
+                <p id="empty-copy">Prueba con otros filtros o una búsqueda diferente.</p>
+                <button class="button button-ghost" id="empty-reset" type="button">Limpiar filtros</button>
+                <a class="button button-primary" id="empty-explore" href="explorar.html" hidden>Explorar catálogo</a>
             </div>
-
         </section>
-
-        <!-- PIE DE PÁGINA -->
-
-        <footer class="site-footer">
-
-            <a class="brand footer-brand" href="index.html">
-                <span class="brand-mark" aria-hidden="true">M</span>
-                <span>MJA <strong>FILMS</strong></span>
-            </a>
-
-            <p>Tu próxima historia favorita está por comenzar.</p>
-
-            <span class="footer-copy">© 2026 MJA FILMS</span>
-
-        </footer>
-
     </main>
 
-    <noscript>Activa JavaScript para acceder al catálogo.</noscript>
+    <!-- ============ [LARAVEL] partials/footer.blade.php ============ -->
+    <footer class="site-footer">
+        <a class="brand footer-brand" href="index.html"><span class="brand-mark" aria-hidden="true">M</span><span>MJA <strong>FILMS</strong></span></a>
+        <p>Tu próxima historia favorita está por comenzar.</p>
+        <span class="footer-copy">© 2026 MJA FILMS</span>
+    </footer>
 
+    <noscript><p class="noscript">Activa JavaScript para acceder al catálogo.</p></noscript>
+
+    <script src="assets/js/datos-demo.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/ui.js"></script>
+    <script src="assets/js/explorar.js"></script>
 </body>
 </html>
